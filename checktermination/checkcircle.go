@@ -11,6 +11,7 @@ type Node struct {
 func flyodDetection(head *Node) string {
 	slowptr := head
 	fastptr := head
+	length := 0
 
 	for true {
 		fastptr = fastptr.next
@@ -24,6 +25,13 @@ func flyodDetection(head *Node) string {
 		}
 		slowptr = slowptr.next
 		if slowptr == fastptr {
+			fastptr = fastptr.next
+			length++
+			for fastptr != slowptr {
+				length++
+				fastptr = fastptr.next
+			}
+			fmt.Println("Length of circular part:", length)
 			return "Trapped!"
 		}
 	}
@@ -35,6 +43,7 @@ func checkTermination(current *Node) string {
 
 	for true {
 		if pointerStore[current] == true {
+			fmt.Println("Starting loop node", current.value)
 			return "Trapped in circular list!"
 		}
 		pointerStore[current] = true
