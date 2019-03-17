@@ -8,6 +8,46 @@ type Node struct {
 	next  *Node
 }
 
+func (h *Node) insertInSorted(nodeValue int) {
+	i := 0
+	current := h
+	for current != nil {
+		fmt.Println(current.value)
+		i++
+		if current.next == nil {
+			// We are in the end game now!
+			// We reached end of the list.
+			tempNextHead := current.next
+			newNode := &Node{nodeValue, tempNextHead}
+			current.next = newNode
+			return
+		}
+		if current.next.value > nodeValue {
+			// If we need to add at the beginning then the
+			// situation is quite different.
+			if i == 1 {
+				tempHead := *h
+				*h = Node{nodeValue, &tempHead}
+			} else {
+				tempNextHead := current.next
+				newNode := &Node{nodeValue, tempNextHead}
+				current.next = newNode
+			}
+			return
+		}
+		current = current.next
+	}
+}
+
+func printList(current *Node) {
+	for current != nil {
+		fmt.Printf("%d --> ", current.value)
+		current = current.next
+	}
+
+	fmt.Println(nil)
+}
+
 func flyodDetection(head *Node) string {
 	slowptr := head
 	fastptr := head
@@ -104,10 +144,10 @@ func addTwoNumbers(l1 *Node, l2 *Node) *Node {
 }
 
 func main() {
-	l1 := &Node{9, &Node{8, nil}}
-	l2 := &Node{9, &Node{3, nil}}
+	l1 := &Node{1, &Node{4, &Node{6, &Node{8, nil}}}}
 
 	// fmt.Println(flyodDetection(n1))
-	// n1.insertInSorted(-1212)
-	printList(addTwoNumbers(l1, l2))
+	l1.insertInSorted(0)
+	// printList(addTwoNumbers(l1, l2))
+	printList(l1)
 }
