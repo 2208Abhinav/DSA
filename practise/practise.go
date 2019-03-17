@@ -8,6 +8,30 @@ type Node struct {
 	next  *Node
 }
 
+// The following function will reverse the linked list in
+// O(n) time complexity and O(1) space complexity.
+// The way I think about this algorithm is that our main
+// focus should be on reversing the direction of links
+// i.e., direction of pointers.
+func reverseInOnO1(head *Node) *Node {
+	var prev *Node // declared this way because we want prev to be nil
+	current := head
+	next := current.next
+	for current != nil {
+		current.next = prev // we reverse the direction of pointer here.
+		// The following lines of code will just traverse through the
+		// while updating the pointers. You should draw the steps on
+		// paper, it will get clear.
+		prev = current
+		current = next
+		// If not true then we prevent nil.nil which will cause errors.
+		if current != nil {
+			next = current.next
+		}
+	}
+	return prev
+}
+
 func (h *Node) insertInSorted(nodeValue int) {
 	i := 0
 	current := h
@@ -147,7 +171,12 @@ func main() {
 	l1 := &Node{1, &Node{4, &Node{6, &Node{8, nil}}}}
 
 	// fmt.Println(flyodDetection(n1))
-	l1.insertInSorted(0)
+	//l1.insertInSorted(0)
 	// printList(addTwoNumbers(l1, l2))
+	printList(l1)
+
+	// Update the head "pointer" after reversing the list.
+	l1 = reverseInOnO1(l1)
+
 	printList(l1)
 }
