@@ -14,6 +14,9 @@ type Node struct {
 // focus should be on reversing the direction of links
 // i.e., direction of pointers.
 func reverseInOnO1(head *Node) *Node {
+	if head == nil {
+		return head
+	}
 	var prev *Node // declared this way because we want prev to be nil
 	current := head
 	next := current.next
@@ -168,7 +171,8 @@ func addTwoNumbers(l1 *Node, l2 *Node) *Node {
 }
 
 func main() {
-	l1 := &Node{1, &Node{4, &Node{6, &Node{8, nil}}}}
+	var l1 *Node
+	l1 = nil
 
 	// fmt.Println(flyodDetection(n1))
 	//l1.insertInSorted(0)
