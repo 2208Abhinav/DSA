@@ -220,6 +220,15 @@ func findMiddleInSinglePass(head *Node) *Node {
 	return slowptr
 }
 
+func printReverse(current *Node) {
+	if current == nil {
+		return
+	}
+	printReverse(current.next)
+	fmt.Print(current.value, " --> ")
+	return
+}
+
 func main() {
 	commonPart := &Node{4, &Node{5, &Node{6, nil}}}
 
@@ -238,5 +247,7 @@ func main() {
 	printList(l2)
 
 	// fmt.Println("Common part:", findIntersection(l1, l2))
-	fmt.Println("Middle Node:", findMiddleInSinglePass(l2))
+	// fmt.Println("Middle Node:", findMiddleInSinglePass(l2))
+	printReverse(l1)
+	fmt.Println(nil)
 }
