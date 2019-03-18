@@ -201,6 +201,25 @@ func addTwoNumbers(l1 *Node, l2 *Node) *Node {
 	return head
 }
 
+// the main aim should be to move slow pointer ceil(n/2) times.
+// in case of even it will return element at ceil(len/2)
+func findMiddleInSinglePass(head *Node) *Node {
+	fastptr := head
+	slowptr := head
+
+	for fastptr != nil {
+		fastptr = fastptr.next
+		// prevent from doing nil.nil
+		if fastptr == nil {
+			return slowptr
+		}
+		fastptr = fastptr.next
+		slowptr = slowptr.next
+	}
+
+	return slowptr
+}
+
 func main() {
 	commonPart := &Node{4, &Node{5, &Node{6, nil}}}
 
@@ -218,5 +237,6 @@ func main() {
 	printList(l1)
 	printList(l2)
 
-	fmt.Println("Common part:", findIntersection(l1, l2))
+	// fmt.Println("Common part:", findIntersection(l1, l2))
+	fmt.Println("Middle Node:", findMiddleInSinglePass(l2))
 }
