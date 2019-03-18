@@ -8,6 +8,37 @@ type Node struct {
 	next  *Node
 }
 
+/*
+       1 -> 2 -> 3
+                  \
+                  4 -> 5 -> 6 -> <nil>
+                 /
+7 -> 8 -> 9 -> 10
+*/
+// This function will find the intersection point of two linked lists
+// in O(n) time complexity, where n is the number of nodes in the
+// bigger linked list. Space complexity is O(n) for map.
+// Like in above case it should be 4.
+func findIntersection(l1 *Node, l2 *Node) *Node {
+	current1 := l1
+	current2 := l2
+	ptrStore := make(map[*Node]bool)
+
+	for current1 != nil {
+		ptrStore[current1] = true
+		current1 = current1.next
+	}
+
+	for current2 != nil {
+		if ptrStore[current2] == true {
+			return current2
+		}
+		current2 = current2.next
+	}
+
+	return nil
+}
+
 // The following function will reverse the linked list in
 // O(n) time complexity and O(1) space complexity.
 // The way I think about this algorithm is that our main
@@ -171,16 +202,21 @@ func addTwoNumbers(l1 *Node, l2 *Node) *Node {
 }
 
 func main() {
-	var l1 *Node
-	l1 = nil
+	commonPart := &Node{4, &Node{5, &Node{6, nil}}}
 
-	// fmt.Println(flyodDetection(n1))
-	//l1.insertInSorted(0)
-	// printList(addTwoNumbers(l1, l2))
+	l1 := &Node{1, &Node{2, &Node{3, commonPart}}}
+	l2 := &Node{7, &Node{8, &Node{9, &Node{10, commonPart}}}}
+	/*
+				the structure is:
+		               l1 1 -> 2 -> 3
+		                             \
+		                             4 -> 5 -> 6 - <nil> commonPart
+		                            /
+		        l2 7 -> 8 -> 9 -> 10
+	*/
+
 	printList(l1)
+	printList(l2)
 
-	// Update the head "pointer" after reversing the list.
-	l1 = reverseInOnO1(l1)
-
-	printList(l1)
+	fmt.Println("Common part:", findIntersection(l1, l2))
 }
