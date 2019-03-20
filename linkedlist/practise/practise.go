@@ -229,11 +229,29 @@ func printReverse(current *Node) {
 	return
 }
 
+func reversePairWise(head *Node) {
+	var temp Node
+	first := head
+	second := first.next
+
+	for first != nil && second != nil {
+		temp = *first
+		*first = *second
+		*second = temp
+		second.next = first.next
+		first.next = second
+		first = second.next
+		if second.next != nil {
+			second = (second.next).next
+		}
+	}
+}
+
 func main() {
 	commonPart := &Node{4, &Node{5, &Node{6, nil}}}
 
-	l1 := &Node{1, &Node{2, &Node{3, commonPart}}}
-	l2 := &Node{7, &Node{8, &Node{9, &Node{10, commonPart}}}}
+	// l1 := &Node{1, &Node{2, &Node{3, commonPart}}}
+	l2 := &Node{7, &Node{8, &Node{9, commonPart}}}
 	/*
 				the structure is:
 		               l1 1 -> 2 -> 3
@@ -243,11 +261,13 @@ func main() {
 		        l2 7 -> 8 -> 9 -> 10
 	*/
 
-	printList(l1)
+	// printList(l1)
 	printList(l2)
 
 	// fmt.Println("Common part:", findIntersection(l1, l2))
 	// fmt.Println("Middle Node:", findMiddleInSinglePass(l2))
-	printReverse(l1)
-	fmt.Println(nil)
+	// printReverse(l1)
+	// fmt.Println(nil)
+	reversePairWise(l2)
+	printList(l2)
 }

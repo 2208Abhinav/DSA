@@ -9,7 +9,7 @@ func main() {
 	// var delPosition int
 	// var position int
 	// var nodeAtPValue int
-	var nodeFromEnd int
+	// var nodeFromEnd int
 
 	head = &Node{}
 	fmt.Println("Enter string values")
@@ -50,8 +50,13 @@ func main() {
 		printLinkedList(head)
 	*/
 
-	fmt.Print("Enter position from end: ")
-	fmt.Scan(&nodeFromEnd)
+	//fmt.Print("Enter position from end: ")
+	// fmt.Scan(&nodeFromEnd)
 
-	fmt.Println(nFromEnd(head, nodeFromEnd))
+	// fmt.Println(nFromEnd(head, nodeFromEnd))
+	var tagertValue int
+	fmt.Print("Delete: ")
+	fmt.Scan(&tagertValue)
+	head.deleteTarget(tagertValue)
+	printLinkedList(head)
 }

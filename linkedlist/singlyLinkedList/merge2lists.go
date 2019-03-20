@@ -30,18 +30,3 @@ func merge2Lists(h1 *Node, h2 *Node) *Node {
 
 	return head
 }
-
-func mergeKLists(heads []*Node) {
-	newHead := &Node{}
-	current := newHead
-
-	for true {
-		smallestIndex := 0
-
-		for index := range heads[1:] {
-			if (*heads[smallestIndex]).value > (*heads[index]).value {
-				smallestIndex = index
-			}
-		}
-	}
-}

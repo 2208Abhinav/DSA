@@ -83,6 +83,26 @@ func (h *Node) deleteAtP(pos int) {
 	(*current).next = (*(*current).next).next
 }
 
+func (current *Node) deleteTarget(target int) {
+	// this is only possible in case of head
+	if current.value == target {
+		headNext := current.next
+		current.next = nil
+		*current = *headNext
+		return
+	}
+	if current.next == nil {
+		return
+	}
+	if current.next.value == target {
+		tempNext := current.next.next
+		current.next = tempNext
+		return
+	}
+	current = current.next
+	current.deleteTarget(target)
+}
+
 func nFromEnd(h *Node, n int) int {
 	i := 0
 	pfinal := h
