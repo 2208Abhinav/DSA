@@ -172,12 +172,42 @@ func postfixToInfix(postfixExpr string) string {
 	return top(helpStack)
 }
 
+func isPalindrome(stringToCheck string) bool {
+	length := len(stringToCheck)
+	limit := int(length / 2)
+	helpStack := &Stack{limit: limit}
+
+	for i, char := range stringToCheck {
+		// If the string contains odd number of terms then skip
+		// the middle term.
+		if length%2 != 0 && i == int(length/2) {
+			continue
+		}
+		if i < limit {
+			helpStack.push(string(char))
+		} else if top(helpStack) == string(char) {
+			helpStack.pop()
+		}
+	}
+
+	if size(helpStack) == 0 {
+		return true
+	}
+	return false
+}
+
 func main() {
 	// symbols := "() (() [()]) {}"
 	//fmt.Println("Symbols balanced:", areBracketsBalanced(symbols))
-	infixExpr := "A+B/C+D*C-D"
-	postfixExpr := infixToPostfix(infixExpr)
-	fmt.Printf("Infix( %s ) -> Postfix( %s )\n", infixExpr, postfixExpr)
-	fmt.Println("Note: Brackets in infix will not be converted back.")
-	fmt.Printf("Postfix( %s ) -> Infix( %s )\n", postfixExpr, postfixToInfix(postfixExpr))
+	// infixExpr := "A+B/C+D*C-D"
+	// postfixExpr := infixToPostfix(infixExpr)
+	// fmt.Printf("Infix( %s ) -> Postfix( %s )\n", infixExpr, postfixExpr)
+	// fmt.Println("Note: Brackets in infix will not be converted back.")
+	// fmt.Printf("Postfix( %s ) -> Infix( %s )\n", postfixExpr, postfixToInfix(postfixExpr))
+
+	var stringToCheck string
+	fmt.Print("Enter to check if it's palindrome or not: ")
+	fmt.Scan(&stringToCheck)
+
+	fmt.Printf("Is palindrome: %v\n", isPalindrome(stringToCheck))
 }
