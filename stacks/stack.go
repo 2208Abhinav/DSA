@@ -142,9 +142,42 @@ func infixToPostfix(infixExpr string) string {
 	return postfixExpr
 }
 
+func postfixToInfix(postfixExpr string) string {
+	var topEl, belowTopEl string
+	helpStack := &Stack{limit: len(postfixExpr)}
+
+	operandRegex, _ := regexp.Compile("[A-Za-z0-9]")
+	operatorRegex, _ := regexp.Compile("[-+/*^]")
+
+	for _, char := range postfixExpr {
+		charString := string(char)
+
+		if operandRegex.MatchString(charString) {
+			helpStack.push(charString)
+		} else if operatorRegex.MatchString(charString) {
+			topEl = top(helpStack)
+			helpStack.pop()
+			belowTopEl = top(helpStack)
+			helpStack.pop()
+			// The order of belowTopEl and topEl below is important.
+			// It depends on the way we generate postFix string using
+			// infixToPostfix function. For example is infix: A/B
+			// postFix: AB/ and now in the stack belowTopEL = A and
+			// topEl = B. If we do topEl + charString + belowToEl then
+			// the result would be B/A, which is wrong.
+			helpStack.push(belowTopEl + charString + topEl)
+		}
+	}
+
+	return top(helpStack)
+}
+
 func main() {
 	// symbols := "() (() [()]) {}"
 	//fmt.Println("Symbols balanced:", areBracketsBalanced(symbols))
-	infixExpr := "A+B/C+D+C-D"
-	fmt.Printf("Infix( %s ) -> Postfix( %s )\n", infixExpr, infixToPostfix(infixExpr))
+	infixExpr := "A+B/C+D*C-D"
+	postfixExpr := infixToPostfix(infixExpr)
+	fmt.Printf("Infix( %s ) -> Postfix( %s )\n", infixExpr, postfixExpr)
+	fmt.Println("Note: Brackets in infix will not be converted back.")
+	fmt.Printf("Postfix( %s ) -> Infix( %s )\n", postfixExpr, postfixToInfix(postfixExpr))
 }
