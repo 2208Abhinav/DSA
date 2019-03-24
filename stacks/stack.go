@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"regexp"
+	"math"
 )
 
 // Stack struct to hold stack elements and the
 // limit of the stack.
 type Stack struct {
 	limit int
-	stack []string
+	stack []*Node
 }
 
-func (stk *Stack) push(el string) {
+func (stk *Stack) push(el *Node) {
 	if len(stk.stack) == stk.limit {
 		fmt.Println("Error: Stack overflow!")
 	} else {
@@ -21,6 +21,7 @@ func (stk *Stack) push(el string) {
 	return
 }
 
+/*
 func areBracketsBalanced(symbols string) bool {
 	symbolsToStore := map[string]bool{
 		")": true,
@@ -53,7 +54,7 @@ func areBracketsBalanced(symbols string) bool {
 	}
 	return false
 }
-
+*/
 func (stk *Stack) pop() {
 	stackLen := len(stk.stack)
 	if stackLen == 0 {
@@ -75,11 +76,11 @@ func size(stk *Stack) int {
 	return len(stk.stack)
 }
 
-func top(stk *Stack) string {
+func top(stk *Stack) *Node {
 	stackLen := len(stk.stack)
 	if stackLen == 0 {
 		fmt.Println("Stack is empty")
-		return ""
+		return nil
 	}
 	return stk.stack[stackLen-1]
 }
@@ -96,6 +97,7 @@ func top(stk *Stack) string {
 		push operator
 	if end of infix expression/string -> append in postfix and pop until stack is empty.
 */
+/*
 func infixToPostfix(infixExpr string) string {
 	// we don't need to strictly use ^$ in regular expression because
 	// we are ultimately taking one character at a time.
@@ -195,19 +197,80 @@ func isPalindrome(stringToCheck string) bool {
 	}
 	return false
 }
+*/
+
+// Node to contain data about node in linked list.
+type Node struct {
+	value int
+	next  *Node
+}
+
+func printList(current *Node) {
+	for current != nil {
+		fmt.Printf("%d --> ", current.value)
+		current = current.next
+	}
+	fmt.Println(nil)
+}
+
+func listLength(head *Node) int {
+	length := 0
+	current := head
+	for current != nil {
+		length++
+		current = current.next
+	}
+
+	return length
+}
+
+// Given linked list: l1 -> l2 -> l3 ...-> l(n-1) -> l(n)
+// Convert to: l1 -> l(n) -> l2 -> l(n-1) -> l3 -> l(n-2) ...->
+func linkNodes(head *Node) {
+	listLen := listLength(head)
+	ptrsInStack := int(math.Ceil(float64(listLen)/2) - 1)
+	helpStack := &Stack{limit: ptrsInStack}
+	current := head
+	i := listLen
+	for current != nil {
+		if i <= ptrsInStack {
+			helpStack.push(current)
+		}
+		current = current.next
+		i--
+	}
+	current = head
+	var originalNext *Node
+	for size(helpStack) != 0 {
+		originalNext = current.next
+		current.next = top(helpStack)
+		helpStack.pop()
+		current.next.next = originalNext
+		current = originalNext
+	}
+	if listLen%2 == 0 {
+		current.next.next = nil
+	} else {
+		current.next = nil
+	}
+}
 
 func main() {
 	// symbols := "() (() [()]) {}"
-	//fmt.Println("Symbols balanced:", areBracketsBalanced(symbols))
+	// fmt.Println("Symbols balanced:", areBracketsBalanced(symbols))
 	// infixExpr := "A+B/C+D*C-D"
 	// postfixExpr := infixToPostfix(infixExpr)
 	// fmt.Printf("Infix( %s ) -> Postfix( %s )\n", infixExpr, postfixExpr)
 	// fmt.Println("Note: Brackets in infix will not be converted back.")
 	// fmt.Printf("Postfix( %s ) -> Infix( %s )\n", postfixExpr, postfixToInfix(postfixExpr))
 
-	var stringToCheck string
-	fmt.Print("Enter to check if it's palindrome or not: ")
-	fmt.Scan(&stringToCheck)
+	// var stringToCheck string
+	// fmt.Print("Enter to check if it's palindrome or not: ")
+	// fmt.Scan(&stringToCheck)
 
-	fmt.Printf("Is palindrome: %v\n", isPalindrome(stringToCheck))
+	// fmt.Printf("Is palindrome: %v\n", isPalindrome(stringToCheck))
+	l1 := &Node{1, &Node{2, &Node{3, &Node{4, &Node{5, nil}}}}}
+	printList(l1)
+	linkNodes(l1)
+	printList(l1)
 }
