@@ -84,13 +84,77 @@ func (q *CircularQueue) isFull() bool {
 	return false
 }
 
-func main() {
-	queue := Constructor(3)
-	fmt.Println(queue.enQueue(1))
-	fmt.Println(queue.enQueue(2))
-	fmt.Println(queue.enQueue(3))
-	fmt.Println(queue.enQueue(4))
-	fmt.Println(queue.back())
-	fmt.Println(queue.isFull())
+// Stack used to reverse queue.
+type Stack struct {
+	limit int
+	stk   []int
+}
 
+// StackConstructor will initialize the stack.
+func StackConstructor(k int) *Stack {
+	stk := &Stack{
+		limit: k,
+		stk:   []int{},
+	}
+
+	return stk
+}
+
+func (s *Stack) size() int {
+	return len(s.stk)
+}
+
+func (s *Stack) push(val int) {
+	s.stk = append(s.stk, val)
+}
+
+func (s *Stack) pop() {
+	s.stk = s.stk[:s.size()-1]
+}
+
+func (s *Stack) top() int {
+	if s.size() == 0 {
+		return -1
+	}
+	return s.stk[s.size()-1]
+}
+
+func main() {
+	/*
+		queue := Constructor(3)
+		fmt.Println(queue.enQueue(1))
+		fmt.Println(queue.enQueue(2))
+		fmt.Println(queue.enQueue(3))
+		fmt.Println(queue.enQueue(4))
+		fmt.Println(queue.back())
+		fmt.Println(queue.isFull())
+	*/
+	queue := Constructor(7)
+	queue.enQueue(1)
+	queue.enQueue(2)
+	queue.enQueue(3)
+	queue.enQueue(4)
+	queue.enQueue(5)
+	queue.enQueue(6)
+	queue.enQueue(7)
+	helpStack := StackConstructor(queue.size)
+
+	fmt.Println(queue.front())
+	fmt.Println(queue.back())
+
+	i := 0
+	queueSize := queue.size
+	for i < queueSize {
+		helpStack.push(queue.front())
+		queue.deQueue()
+		i++
+	}
+
+	for helpStack.top() != -1 {
+		queue.enQueue(helpStack.top())
+		helpStack.pop()
+	}
+
+	fmt.Println(queue.front())
+	fmt.Println(queue.back())
 }
