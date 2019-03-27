@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"strings"
 )
 
 // Stack struct to hold stack elements and the
 // limit of the stack.
 type Stack struct {
 	limit int
-	stack []*Node
+	stack []string
 }
 
-func (stk *Stack) push(el *Node) {
+func (stk *Stack) push(el string) {
 	if len(stk.stack) == stk.limit {
 		fmt.Println("Error: Stack overflow!")
 	} else {
@@ -76,11 +76,11 @@ func size(stk *Stack) int {
 	return len(stk.stack)
 }
 
-func top(stk *Stack) *Node {
+func top(stk *Stack) string {
 	stackLen := len(stk.stack)
 	if stackLen == 0 {
 		fmt.Println("Stack is empty")
-		return nil
+		return ""
 	}
 	return stk.stack[stackLen-1]
 }
@@ -226,6 +226,7 @@ func listLength(head *Node) int {
 
 // Given linked list: l1 -> l2 -> l3 ...-> l(n-1) -> l(n)
 // Convert to: l1 -> l(n) -> l2 -> l(n-1) -> l3 -> l(n-2) ...->
+/*
 func linkNodes(head *Node) {
 	listLen := listLength(head)
 	ptrsInStack := int(math.Ceil(float64(listLen)/2) - 1)
@@ -254,6 +255,29 @@ func linkNodes(head *Node) {
 		current.next = nil
 	}
 }
+*/
+
+func finalDirectory(directory string) string {
+	directoryChars := strings.Split(directory, "/")
+	helpStack := &Stack{limit: len(directoryChars)}
+
+	i := 0
+
+	for i < len(directoryChars) {
+		if directoryChars[i] == ".." {
+			helpStack.pop()
+		} else if directoryChars[i] != "." {
+			helpStack.push(directoryChars[i])
+		}
+		i++
+	}
+	finalDirectory := strings.Join(helpStack.stack, "/")
+	if len(finalDirectory) == 0 {
+		return ""
+	}
+	finalDirectory = finalDirectory[0 : len(finalDirectory)-1]
+	return finalDirectory
+}
 
 func main() {
 	// symbols := "() (() [()]) {}"
@@ -269,8 +293,11 @@ func main() {
 	// fmt.Scan(&stringToCheck)
 
 	// fmt.Printf("Is palindrome: %v\n", isPalindrome(stringToCheck))
-	l1 := &Node{1, &Node{2, &Node{3, &Node{4, &Node{5, nil}}}}}
-	printList(l1)
-	linkNodes(l1)
-	printList(l1)
+	// l1 := &Node{1, &Node{2, &Node{3, &Node{4, &Node{5, nil}}}}}
+	// printList(l1)
+	// linkNodes(l1)
+	// printList(l1)
+
+	directory := finalDirectory("/a/..")
+	fmt.Println(directory)
 }
