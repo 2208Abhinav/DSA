@@ -119,6 +119,38 @@ func (s *Stack) top() int {
 	return s.stk[s.size()-1]
 }
 
+// QueueUsing2Stacks is a queue implemented using 2 stacks.
+type QueueUsing2Stacks struct {
+	mainStack   []int
+	helperStack []int
+}
+
+func (q *QueueUsing2Stacks) enQueue(el int) {
+	q.mainStack = append(q.mainStack, el)
+}
+
+func (q *QueueUsing2Stacks) deQueue() {
+	i := q.size() - 1
+	for i >= 0 {
+		q.helperStack = append(q.helperStack, q.mainStack[i])
+		i--
+	}
+	q.mainStack = []int{}
+	popIndex := len(q.helperStack) - 1
+	q.helperStack = q.helperStack[:popIndex]
+
+	i = len(q.helperStack) - 1
+	for i >= 0 {
+		q.mainStack = append(q.mainStack, q.helperStack[i])
+		i--
+	}
+	q.helperStack = []int{}
+}
+
+func (q *QueueUsing2Stacks) size() int {
+	return len(q.mainStack)
+}
+
 func main() {
 	/*
 		queue := Constructor(3)
@@ -129,32 +161,46 @@ func main() {
 		fmt.Println(queue.back())
 		fmt.Println(queue.isFull())
 	*/
-	queue := Constructor(7)
+	/*
+		Algorithm for reversing queue
+			queue := Constructor(7)
+			queue.enQueue(1)
+			queue.enQueue(2)
+			queue.enQueue(3)
+			queue.enQueue(4)
+			queue.enQueue(5)
+			queue.enQueue(6)
+			queue.enQueue(7)
+			helpStack := StackConstructor(queue.size)
+
+			fmt.Println(queue.front())
+			fmt.Println(queue.back())
+
+			i := 0
+			queueSize := queue.size
+			for i < queueSize {
+				helpStack.push(queue.front())
+				queue.deQueue()
+				i++
+			}
+
+			for helpStack.top() != -1 {
+				queue.enQueue(helpStack.top())
+				helpStack.pop()
+			}
+
+			fmt.Println(queue.front())
+			fmt.Println(queue.back())
+	*/
+
+	queue := &QueueUsing2Stacks{}
 	queue.enQueue(1)
 	queue.enQueue(2)
 	queue.enQueue(3)
 	queue.enQueue(4)
 	queue.enQueue(5)
-	queue.enQueue(6)
-	queue.enQueue(7)
-	helpStack := StackConstructor(queue.size)
-
-	fmt.Println(queue.front())
-	fmt.Println(queue.back())
-
-	i := 0
-	queueSize := queue.size
-	for i < queueSize {
-		helpStack.push(queue.front())
-		queue.deQueue()
-		i++
-	}
-
-	for helpStack.top() != -1 {
-		queue.enQueue(helpStack.top())
-		helpStack.pop()
-	}
-
-	fmt.Println(queue.front())
-	fmt.Println(queue.back())
+	fmt.Println(queue.mainStack)
+	queue.deQueue()
+	queue.deQueue()
+	fmt.Println(queue.mainStack)
 }
