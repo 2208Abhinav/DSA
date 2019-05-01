@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.LinkedList;
@@ -57,9 +59,14 @@ public class BinaryTree {
         insert(root, 3);
         insert(root, 4);
         insert(root, 5);
-        insert(root, 9);
         insert(root, 6);
         insert(root, 7);
+        insert(root, 8);
+        insert(root, 9);
+        insert(root, 10);
+        insert(root, 11);
+        insert(root, 12);
+        insert(root, 13);
 
         // Node root2 = new Node(1, null, null);
 
@@ -100,7 +107,9 @@ public class BinaryTree {
 
         // System.out.printf("LCD: %d\n", findLCD(root, node1, node2).getData());
 
-        printZigZag(root);
+        // printZigZag(root);
+
+        columnWiseTraversal(root);
     }
 
     // Following algorithm is for insertion in BST.
@@ -125,6 +134,51 @@ public class BinaryTree {
             }
         }
     */
+
+    public static void columnWiseTraversal(Node root) {
+        // TreeMap implements SortedMap and sorts values accoding to keys.
+        Map<Integer, List<Integer>> helperMap = new TreeMap<Integer, List<Integer>>();
+
+        // Since map is pass by reference the map will also be changed here.
+        prepareMap(helperMap, root, 0);
+        printMap(helperMap);
+        helperMap.clear();
+    }
+
+    public static void printMap(Map<Integer, List<Integer>> map) {
+        List<Integer> column;
+        int columnSize;
+        int i;
+        for (Map.Entry<Integer, List<Integer>> mapEntry : map.entrySet()) {
+            column = mapEntry.getValue();
+            columnSize = column.size();
+            i = 0;
+            while (i < columnSize) {
+                System.out.println(column.get(i));
+                i++;
+            }
+        }
+    }
+
+    public static void prepareMap(Map<Integer, List<Integer>> helperMap, Node node, int ref) {
+        List<Integer> columnNodeList = new ArrayList<>();
+        if (helperMap.containsKey(ref)) {
+            columnNodeList = helperMap.get(ref);
+            columnNodeList.add(node.getData());
+        } else {
+            columnNodeList.add(node.getData());
+            helperMap.put(ref, columnNodeList);
+        }
+
+        if (node.getLeft() != null) {
+            prepareMap(helperMap, node.getLeft(), ref - 1);
+        }
+        if (node.getRight() != null) {
+            prepareMap(helperMap, node.getRight(), ref + 1);
+        }
+
+        return;
+    }
 
     public static void printZigZag(Node root) {
         Stack<Node> stack1 = new Stack<Node>();
