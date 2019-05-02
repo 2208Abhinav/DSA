@@ -2,11 +2,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.regex.*;
 
 class Node {
     int value;
@@ -109,7 +111,15 @@ public class BinaryTree {
 
         // printZigZag(root);
 
-        columnWiseTraversal(root);
+        // columnWiseTraversal(root);
+        Node expTreeNode = expressionTree("a+b-c*d/e");
+
+        // printExpressionTree should print the exact string as
+        // passed to expressionTree function i.e., infix string.
+        // Note: Brackets are not preserved in postfix expressions
+        // so you won't get then after printing expressionTree.
+        printExpressionTree(expTreeNode);
+        System.out.println();
     }
 
     // Following algorithm is for insertion in BST.
@@ -134,6 +144,95 @@ public class BinaryTree {
             }
         }
     */
+
+    public static void printExpressionTree(Node root) {
+        if (root.getLeft() != null) {
+            printExpressionTree(root.getLeft());
+        }
+        System.out.printf("%c", root.getData());
+        if (root.getRight() != null) {
+            printExpressionTree(root.getRight());
+        }
+    }
+
+    public static Node expressionTree(String infix) {
+        // We are  converting postfix string to array of chars because our Node
+        // supports int as data and not string. So if we change Node than other
+        // code will break. In order to prevent this we are using chars and while
+        // adding to tree, chars are converted to ascii values i.e., integers.
+        char[] postfixArray = infixToPostfix(infix).toCharArray();
+        char postFixChar;
+        int limit = postfixArray.length;
+
+        for(int i = 0; i < limit; i++) {
+            postFixChar = postfixArray[i];
+            // Check whether operand or not i.e., [A-Za-z] using ascii values.
+            if ((postFixChar >= 65 && postFixChar <= 90) || (postFixChar >= 97 && postFixChar <= 122)) {
+                Node newNode = new Node((int) postFixChar, null, null);
+                helperStack.push(newNode);
+            } else {
+                Node rightChild = helperStack.pop();
+                Node leftChild = helperStack.pop();
+                Node newNode = new Node((int) postFixChar, leftChild, rightChild);
+                helperStack.push(newNode);
+            }
+        }
+
+        return helperStack.pop();
+    }
+
+    public static String infixToPostfix(String infix) {
+        Stack<String> symbolsStack = new Stack<String>();
+        String[] stringChars = infix.split("");
+        String stackTop;
+        String postfix = "";
+        int limit = stringChars.length;
+
+        Pattern operandsRegex = Pattern.compile("[A-Za-z]");
+
+        Map<String, Integer> priorityMap = new HashMap<String, Integer>();
+        priorityMap.put("^", 3);
+        priorityMap.put("*", 2);
+        priorityMap.put("/", 2);
+        priorityMap.put("+", 1);
+        priorityMap.put("-", 1);
+        priorityMap.put("(", 0);
+
+        for(int i = 0; i < limit; i++) {
+            if (stringChars[i].equals("(")) {
+                symbolsStack.push("(");
+            } else if (operandsRegex.matcher(stringChars[i]).matches()) {
+                postfix += stringChars[i];
+            } else if (stringChars[i].equals(")")) {
+                while (true) {
+                    stackTop = symbolsStack.pop();
+                    if (stackTop == "(") {
+                        break;
+                    } else {
+                        postfix += stackTop;
+                    }
+                }
+            } else {
+                while (!symbolsStack.isEmpty()) {
+                    stackTop = symbolsStack.pop();
+                    if (priorityMap.get(stackTop) < priorityMap.get(stringChars[i])) {
+                        symbolsStack.push(stackTop);
+                        break;
+                    } else {
+                        postfix += stackTop;
+                    }
+                }
+
+                symbolsStack.push(stringChars[i]);
+            }
+        }
+
+        while (!symbolsStack.isEmpty()) {
+            postfix += symbolsStack.pop();
+        }
+
+        return postfix;
+    }
 
     public static void columnWiseTraversal(Node root) {
         // TreeMap implements SortedMap and sorts values accoding to keys.
