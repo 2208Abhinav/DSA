@@ -135,7 +135,10 @@ public class BinaryTree {
         bstInsert(root, 21);
 
         // Inorder traversal can be used to verify the BST generated.
-        inOrderTraversal(root);
+        // inOrderTraversal(root);
+
+        System.out.println(bstSearch(root, 21));
+        System.out.println(bstSearch(root, 22));
     }
 
     // Following algorithm is for insertion in BST.
@@ -157,6 +160,19 @@ public class BinaryTree {
         } else {
             root.setData(nodeValue);
         }
+    }
+
+    public static boolean bstSearch(Node root, int key) {
+        if (root != null) {
+            if (root.getData() == key) {
+                return true;
+            }
+            if (root.getData() < key)
+                return bstSearch(root.getRight(), key);
+            // the only case left is to search right subtree.
+            return bstSearch(root.getLeft(), key);
+        }
+        return false;
     }
 
     public static void printExpressionTree(Node root) {
