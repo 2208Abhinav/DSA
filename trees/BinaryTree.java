@@ -107,7 +107,7 @@ public class BinaryTree {
         // Node node1 = root.getRight();
         // Node node2 = root.getLeft().getRight();
 
-        // System.out.printf("LCD: %d\n", findLCD(root, node1, node2).getData());
+        // System.out.printf("LCA: %d\n", findLCA(root, node1, node2).getData());
 
         // printZigZag(root);
 
@@ -381,10 +381,10 @@ public class BinaryTree {
         }
     }
 
-    public static Node findLCD(Node root, Node node1, Node node2) {
+    public static Node findLCA(Node root, Node node1, Node node2) {
         helperQueue.add(root);
         int count;
-        Node node, LCD;
+        Node node, LCA;
         boolean isDescendant;
 
         while (!helperQueue.isEmpty()) {
@@ -415,10 +415,10 @@ public class BinaryTree {
         if (helperStack.size() == 0) {
             return null;
         }
-        LCD = helperStack.pop();
+        LCA = helperStack.pop();
         helperStack.clear();
 
-        return LCD;
+        return LCA;
     }
 
     public static boolean findNode(Node node, Node node1, Node node2) {
