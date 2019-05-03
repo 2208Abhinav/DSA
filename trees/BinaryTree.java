@@ -55,20 +55,20 @@ public class BinaryTree {
     static List<List<Integer>> wholeCollection = new ArrayList<List<Integer>>();
 
     public static void main(String[] args) {
-        Node root = new Node(1, null, null);
-
-        insert(root, 2);
-        insert(root, 3);
-        insert(root, 4);
-        insert(root, 5);
-        insert(root, 6);
-        insert(root, 7);
-        insert(root, 8);
-        insert(root, 9);
-        insert(root, 10);
-        insert(root, 11);
-        insert(root, 12);
-        insert(root, 13);
+        // Node root = new Node(1, null, null);
+        //
+        // insert(root, 2);
+        // insert(root, 3);
+        // insert(root, 4);
+        // insert(root, 5);
+        // insert(root, 6);
+        // insert(root, 7);
+        // insert(root, 8);
+        // insert(root, 9);
+        // insert(root, 10);
+        // insert(root, 11);
+        // insert(root, 12);
+        // insert(root, 13);
 
         // Node root2 = new Node(1, null, null);
 
@@ -112,38 +112,52 @@ public class BinaryTree {
         // printZigZag(root);
 
         // columnWiseTraversal(root);
-        Node expTreeNode = expressionTree("a+b-c*d/e");
+        // Node expTreeNode = expressionTree("a+b-c*d/e");
 
         // printExpressionTree should print the exact string as
         // passed to expressionTree function i.e., infix string.
         // Note: Brackets are not preserved in postfix expressions
         // so you won't get then after printing expressionTree.
-        printExpressionTree(expTreeNode);
-        System.out.println();
+        // printExpressionTree(expTreeNode);
+        // System.out.println();
+
+        Node root = new Node(15, null, null);
+
+        bstInsert(root, 8);
+        bstInsert(root, 18);
+        bstInsert(root, 7);
+        bstInsert(root, 9);
+        bstInsert(root, 17);
+        bstInsert(root, 20);
+        bstInsert(root, 6);
+        bstInsert(root, 10);
+        bstInsert(root, 16);
+        bstInsert(root, 21);
+
+        // Inorder traversal can be used to verify the BST generated.
+        inOrderTraversal(root);
     }
 
     // Following algorithm is for insertion in BST.
-    /*
-        public static void bstInsert(Node root, int nodeValue) {
-            try {
-                if (root.getData() < nodeValue) {
-                    if (root.getRight() == null) {
-                        root.setRight(new Node(nodeValue, null, null));
-                    } else {
-                        insert(root.getRight(), nodeValue);
-                    }
+    public static void bstInsert(Node root, int nodeValue) {
+        if (root != null) {
+            if (root.getData() < nodeValue) {
+                if (root.getRight() == null) {
+                    root.setRight(new Node(nodeValue, null, null));
                 } else {
-                    if (root.getLeft() == null) {
-                        root.setLeft(new Node(nodeValue, null, null));
-                    } else {
-                        insert(root.getLeft(), nodeValue);
-                    }
+                    bstInsert(root.getRight(), nodeValue);
                 }
-            } catch (NullPointerException e) {
-                root.setData(nodeValue);
+            } else {
+                if (root.getLeft() == null) {
+                    root.setLeft(new Node(nodeValue, null, null));
+                } else {
+                    bstInsert(root.getLeft(), nodeValue);
+                }
             }
+        } else {
+            root.setData(nodeValue);
         }
-    */
+    }
 
     public static void printExpressionTree(Node root) {
         if (root.getLeft() != null) {
