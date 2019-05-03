@@ -55,20 +55,20 @@ public class BinaryTree {
     static List<List<Integer>> wholeCollection = new ArrayList<List<Integer>>();
 
     public static void main(String[] args) {
-        // Node root = new Node(1, null, null);
-        //
-        // insert(root, 2);
-        // insert(root, 3);
-        // insert(root, 4);
-        // insert(root, 5);
-        // insert(root, 6);
-        // insert(root, 7);
-        // insert(root, 8);
-        // insert(root, 9);
-        // insert(root, 10);
-        // insert(root, 11);
-        // insert(root, 12);
-        // insert(root, 13);
+        Node root2 = new Node(1, null, null);
+
+        insert(root2, 2);
+        insert(root2, 3);
+        insert(root2, 4);
+        insert(root2, 5);
+        insert(root2, 6);
+        insert(root2, 7);
+        insert(root2, 8);
+        insert(root2, 9);
+        insert(root2, 10);
+        insert(root2, 11);
+        insert(root2, 12);
+        insert(root2, 13);
 
         // Node root2 = new Node(1, null, null);
 
@@ -146,7 +146,9 @@ public class BinaryTree {
         // System.out.println(bstFindMin(root));
         // System.out.println(bstFindMax(root));
 
-        System.out.println(bstFindLCA(root, 6, 21).getData());
+        // System.out.println(bstFindLCA(root, 6, 21).getData());
+        System.out.println(isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        System.out.println(isBST(root2, Integer.MIN_VALUE, Integer.MAX_VALUE));
     }
 
     // Following algorithm is for insertion in BST.
@@ -223,6 +225,19 @@ public class BinaryTree {
             return bstFindLCA(root.getRight(), a, b);
         }
         return null;
+    }
+
+    public static boolean isBST(Node root, int low, int up) {
+        if (root != null) {
+            if (!(root.getData() > low && root.getData() <= up))
+                return false;
+
+            boolean isLeftSubtreeBST = isBST(root.getLeft(), low, root.getData());
+            boolean isRightSubtreeBST = isBST(root.getRight(), root.getData(), up);
+
+            return isLeftSubtreeBST && isRightSubtreeBST;
+        }
+        return true;
     }
 
     public static void printExpressionTree(Node root) {
