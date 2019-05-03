@@ -144,6 +144,7 @@ public class BinaryTree {
         // System.out.println(iterativeBstSearch(root, 22));
 
         System.out.println(bstFindMin(root));
+        System.out.println(bstFindMax(root));
     }
 
     // Following algorithm is for insertion in BST.
@@ -200,6 +201,13 @@ public class BinaryTree {
             return node.getData();
         }
         return bstFindMin(node.getLeft());
+    }
+
+    public static int bstFindMax(Node node) {
+        if (node.getRight() == null) {
+            return node.getData();
+        }
+        return bstFindMax(node.getRight());
     }
 
     public static void printExpressionTree(Node root) {
