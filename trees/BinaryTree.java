@@ -140,8 +140,10 @@ public class BinaryTree {
         // System.out.println(bstSearch(root, 21));
         // System.out.println(bstSearch(root, 22));
 
-        System.out.println(iterativeBstSearch(root, 21));
-        System.out.println(iterativeBstSearch(root, 22));
+        // System.out.println(iterativeBstSearch(root, 21));
+        // System.out.println(iterativeBstSearch(root, 22));
+
+        System.out.println(bstFindMin(root));
     }
 
     // Following algorithm is for insertion in BST.
@@ -191,6 +193,13 @@ public class BinaryTree {
             return bstSearch(root.getLeft(), key);
         }
         return false;
+    }
+
+    public static int bstFindMin(Node node) {
+        if (node.getLeft() == null) {
+            return node.getData();
+        }
+        return bstFindMin(node.getLeft());
     }
 
     public static void printExpressionTree(Node root) {
