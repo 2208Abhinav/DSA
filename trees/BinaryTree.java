@@ -10,6 +10,18 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.regex.*;
 
+// This is node implementation for doubly linked list.
+class DLLNode {
+	int data;
+	DLLNode next, prev;
+
+	DLLNode(int data) {
+		this.data = data;
+		this.next = null;
+		this.prev = null;
+	}
+}
+
 class Node {
     int value;
     Node left, right;
@@ -55,20 +67,20 @@ public class BinaryTree {
     static List<List<Integer>> wholeCollection = new ArrayList<List<Integer>>();
 
     public static void main(String[] args) {
-        Node root2 = new Node(1, null, null);
+        // Node root2 = new Node(1, null, null);
 
-        insert(root2, 2);
-        insert(root2, 3);
-        insert(root2, 4);
-        insert(root2, 5);
-        insert(root2, 6);
-        insert(root2, 7);
-        insert(root2, 8);
-        insert(root2, 9);
-        insert(root2, 10);
-        insert(root2, 11);
-        insert(root2, 12);
-        insert(root2, 13);
+        // insert(root2, 2);
+        // insert(root2, 3);
+        // insert(root2, 4);
+        // insert(root2, 5);
+        // insert(root2, 6);
+        // insert(root2, 7);
+        // insert(root2, 8);
+        // insert(root2, 9);
+        // insert(root2, 10);
+        // insert(root2, 11);
+        // insert(root2, 12);
+        // insert(root2, 13);
 
         // Node root2 = new Node(1, null, null);
 
@@ -147,8 +159,57 @@ public class BinaryTree {
         // System.out.println(bstFindMax(root));
 
         // System.out.println(bstFindLCA(root, 6, 21).getData());
-        System.out.println(isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        System.out.println(isBST(root2, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        // System.out.println(isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        // System.out.println(isBST(root2, Integer.MIN_VALUE, Integer.MAX_VALUE));
+
+        DLLNode head = new DLLNode(1);
+        DLLNode node2 = new DLLNode(2);
+        DLLNode node3 = new DLLNode(3);
+        DLLNode node4 = new DLLNode(4);
+        head.next = node2;
+        node2.prev = head;
+        node2.next = node3;
+        node3.prev = node2;
+        node3.next = node4;
+        node4.prev = node3;
+
+        Node root3 = dllToBst(head);
+
+        // If BST was created correctly then inorder traversal
+        // should print tree exactly in the same order as DLL.
+        inOrderTraversal(root3);
+    }
+
+    public static Node dllToBst(DLLNode head) {
+    	DLLNode listCenter = findCenterOfDll(head);
+    	Node treeRoot = new Node(listCenter.data, null, null);
+    	DLLNode leftPtr = listCenter.prev;
+    	DLLNode rightPtr = listCenter.next;
+
+    	while (!(leftPtr == null && rightPtr == null)) {
+    		if (leftPtr != null) {
+    			bstInsert(treeRoot, leftPtr.data);
+    			leftPtr = leftPtr.prev;
+    		}
+    		if (rightPtr != null) {
+    			bstInsert(treeRoot, rightPtr.data);
+    			rightPtr = rightPtr.next;
+    		}
+    	}
+
+    	return treeRoot;
+    }
+
+    public static DLLNode findCenterOfDll(DLLNode head) {
+    	DLLNode slowPtr = head;
+    	DLLNode fastPtr = head;
+
+    	while (fastPtr != null && fastPtr.next != null) {
+    		slowPtr = slowPtr.next;
+    		fastPtr = fastPtr.next.next;
+    	}
+
+    	return slowPtr;
     }
 
     // Following algorithm is for insertion in BST.
