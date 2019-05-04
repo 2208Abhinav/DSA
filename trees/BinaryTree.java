@@ -179,7 +179,8 @@ public class BinaryTree {
         // // should print tree exactly in the same order as DLL.
         // inOrderTraversal(root3);
 
-        iterativePreOrderTraversal(root);
+        // iterativePreOrderTraversal(root);
+        iterativeInorderTraversal(root);
     }
 
     public static Node dllToBst(DLLNode head) {
@@ -825,6 +826,21 @@ public class BinaryTree {
     		if (node.getLeft() != null)
     			helperStack.push(node.getLeft());
     		System.out.println(node.getData());
+    	}
+    }
+
+    public static void iterativeInorderTraversal(Node root) {
+    	Node node = root;
+
+    	while (!helperStack.isEmpty() || node != null) {
+    		if (node != null) {
+    			helperStack.push(node);
+    			node = node.getLeft();
+    		} else {
+    			node = helperStack.pop();
+    			System.out.println(node.getData());
+    			node = node.getRight();
+    		}
     	}
     }
 
