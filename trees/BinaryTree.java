@@ -162,22 +162,24 @@ public class BinaryTree {
         // System.out.println(isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
         // System.out.println(isBST(root2, Integer.MIN_VALUE, Integer.MAX_VALUE));
 
-        DLLNode head = new DLLNode(1);
-        DLLNode node2 = new DLLNode(2);
-        DLLNode node3 = new DLLNode(3);
-        DLLNode node4 = new DLLNode(4);
-        head.next = node2;
-        node2.prev = head;
-        node2.next = node3;
-        node3.prev = node2;
-        node3.next = node4;
-        node4.prev = node3;
+        // DLLNode head = new DLLNode(1);
+        // DLLNode node2 = new DLLNode(2);
+        // DLLNode node3 = new DLLNode(3);
+        // DLLNode node4 = new DLLNode(4);
+        // head.next = node2;
+        // node2.prev = head;
+        // node2.next = node3;
+        // node3.prev = node2;
+        // node3.next = node4;
+        // node4.prev = node3;
 
-        Node root3 = dllToBst(head);
+        // Node root3 = dllToBst(head);
 
-        // If BST was created correctly then inorder traversal
-        // should print tree exactly in the same order as DLL.
-        inOrderTraversal(root3);
+        // // If BST was created correctly then inorder traversal
+        // // should print tree exactly in the same order as DLL.
+        // inOrderTraversal(root3);
+
+        iterativePreOrderTraversal(root);
     }
 
     public static Node dllToBst(DLLNode head) {
@@ -808,6 +810,22 @@ public class BinaryTree {
         }
 
         return false;
+    }
+
+    public static void iterativePreOrderTraversal(Node root) {
+    	if (root != null) {
+    		helperStack.push(root);
+    	}
+    	Node node;
+
+    	while (!helperStack.isEmpty()) {
+    		node = helperStack.pop();
+    		if (node.getRight() != null)
+    			helperStack.push(node.getRight());
+    		if (node.getLeft() != null)
+    			helperStack.push(node.getLeft());
+    		System.out.println(node.getData());
+    	}
     }
 
     public static void inOrderTraversal(Node root) {
