@@ -183,7 +183,9 @@ public class BinaryTree {
 
         // iterativePreOrderTraversal(root);
         // iterativeInorderTraversal(root);
-        kthSmallestInBST(root, 4);
+        // kthSmallestInBST(root, 4);
+        System.out.println(isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        System.out.println(isBSTUsingInorder(root, Integer.MIN_VALUE));
     }
 
     public static Node dllToBst(DLLNode head) {
@@ -305,6 +307,19 @@ public class BinaryTree {
             return isLeftSubtreeBST && isRightSubtreeBST;
         }
         return true;
+    }
+
+    public static boolean isBSTUsingInorder(Node node, int previousValue) {
+    	if (node != null) {
+    		if (node.getLeft() != null) {
+    			return isBSTUsingInorder(node.getLeft(), node.getData());
+    		}
+    		if (node.getData() > previousValue) return false;
+    		if(node.getRight() != null) {
+    			return isBSTUsingInorder(node.getRight(), node.getData());
+    		}
+    	}
+    	return true;
     }
 
     public static void printExpressionTree(Node root) {
