@@ -66,6 +66,8 @@ public class BinaryTree {
     static List<Integer> collection = new ArrayList<>();
     static List<List<Integer>> wholeCollection = new ArrayList<List<Integer>>();
 
+    static int counter = 0;
+
     public static void main(String[] args) {
         // Node root2 = new Node(1, null, null);
 
@@ -180,7 +182,8 @@ public class BinaryTree {
         // inOrderTraversal(root3);
 
         // iterativePreOrderTraversal(root);
-        iterativeInorderTraversal(root);
+        // iterativeInorderTraversal(root);
+        kthSmallestInBST(root, 4);
     }
 
     public static Node dllToBst(DLLNode head) {
@@ -338,6 +341,23 @@ public class BinaryTree {
         }
 
         return helperStack.pop();
+    }
+
+    public static void kthSmallestInBST(Node node, int k) {
+    	if (node.getLeft() != null) {
+    		counter++;
+    		kthSmallestInBST(node.getLeft(), k);
+    	}
+    	if (k == counter) {
+    		System.out.printf("Counter -> %d\n", counter);
+    		System.out.printf("K -> %d\n", k);
+    		System.out.println(node.getData());
+    		counter++;
+    	}
+    	if (node.getLeft() != null) {
+    		counter++;
+    		kthSmallestInBST(node.getLeft(), k);
+    	}
     }
 
     public static String infixToPostfix(String infix) {
