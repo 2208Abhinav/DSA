@@ -40,6 +40,9 @@ public class BalancedBST {
 		Node balancedBstHead = sortedArrToBalancecBST(0, sortedArr.length - 1);
 
 		preorderTraversal(balancedBstHead);
+
+		System.out.print("Balanced: ");
+		System.out.println(isBalanced(balancedBstHead));
 	}
 
 	// If Balanced BST was build correctly then this function should
@@ -64,5 +67,27 @@ public class BalancedBST {
 		node.setRight(sortedArrToBalancecBST(mid + 1, end));
 
 		return node;
+	}
+
+	// Check if BST is balanced or not. O(n^2)
+	public static boolean isBalanced(Node node) {
+		if (node == null) return true;
+
+		int leftSubtreeHeight = height(node.getLeft());
+		int rightSubtreeHeight = height(node.getRight());
+
+		int balanceFactor = leftSubtreeHeight - rightSubtreeHeight;
+
+		if (!(balanceFactor >= -1 && balanceFactor <= 1)) {
+			return false;
+		}
+
+		return isBalanced(node.getLeft()) && isBalanced(node.getRight());
+	}
+
+	public static int height(Node node) {
+		if (node == null) return 0;
+
+		return 1 + Math.max(height(node.getLeft()), height(node.getRight()));
 	}
 }
