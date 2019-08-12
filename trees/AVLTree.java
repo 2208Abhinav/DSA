@@ -121,6 +121,23 @@ public class AVLTree {
 		return root;
 	}
 
+	// I feel that level order traversal (breadth first traversal)
+	// is better traversal method to check if tree is AVL or not.
+	public static void levelOrderTraversal(Node root) {
+		if (root == null) return;
+
+		helperQueue.add(root);
+
+		while (!helperQueue.isEmpty()) {
+			Node node = helperQueue.remove();
+
+			System.out.println(node.getData());
+
+			if (node.getLeft() != null) helperQueue.add(node.getLeft());
+			if (node.getRight() != null) helperQueue.add(node.getRight());
+		}
+	}
+
 	public static void main(String[] args) {
 		// Root may change due to self balancing
 		Node root = insert(null, 10);
@@ -131,5 +148,7 @@ public class AVLTree {
 		root = insert(root, 50);
 		root = insert(root, 65);
 		root = insert(root, 10);
+
+		levelOrderTraversal(root);
 	}
 }
