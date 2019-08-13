@@ -194,7 +194,12 @@ public class BinaryTree {
 
         // iterativePreOrderTraversal(root);
         // iterativeInorderTraversal(root);
-        kthSmallestInBST(root, 4);
+        // kthSmallestInBST(root, 4);
+
+        deleteNode(root, 21);
+        // use level order traversal (breadth first traversal)
+        // to check the structure of tree after deletion
+        levelOrderTraversal(root);
     }
 
     public static Node dllToBst(DLLNode head) {
@@ -821,13 +826,47 @@ public class BinaryTree {
         }
     }
 
-    public static boolean deleteNode(Node node, int data) {
+    public static int inorderSuccessor(Node root) {
+    	if (root.getLeft() == null) return root.getData();
+    	return inorderSuccessor(root.getLeft());
+    }
+
+    public static Node deleteNode(Node root, int key) {
+    	if (root == null) return null;
+
+    	if (key < root.getData()) {
+    		root.setLeft(deleteNode(root.getLeft(), key));
+    	} else if (key > root.getData()) {
+    		root.setRight(deleteNode(root.getRight(), key));
+    	} else {
+    		// Case when node has only right subtree
+    		if (root.getLeft() == null) return root.getRight();
+
+    		// Case when node has only left subtree
+    		else if (root.getRight() == null) return root.getLeft();
+    		
+    		// Case when node has both right and left subtree
+    		// Find inorder successor -> replace the node
+    		// with it -> delete the inorder successor in right
+    		// subtree
+    		root.setData(inorderSuccessor(root.getRight()));
+
+    		root.right = deleteNode(root.right, root.getData());
+    	}
+
+    	return root;
+    }
+
+    // the difference between deleteSubtree and deleteNode is that deleteSubtree
+    // will delete node and also it's subtree but deleteNode will only delete node
+    // and will take care of the subtree
+    public static boolean deleteSubtree(Node node, int data) {
         if (node.getLeft() != null) {
             if (node.getLeft().getData() == data) {
                 node.setLeft(null);
                 return true;
             }
-            if (deleteNode(node.getLeft(), data)) {
+            if (deleteSubtree(node.getLeft(), data)) {
                 return true;
             }
         }
@@ -836,7 +875,7 @@ public class BinaryTree {
                 node.setRight(null);
                 return true;
             }
-            if (deleteNode(node.getRight(), data)) {
+            if (deleteSubtree(node.getRight(), data)) {
                 return true;
             }
         }
