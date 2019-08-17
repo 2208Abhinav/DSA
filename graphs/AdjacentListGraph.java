@@ -1,5 +1,6 @@
 // The graph is undirected
 import java.util.LinkedList;
+import java.util.Queue;
 
 class GraphList {
 	int vertex;
@@ -25,6 +26,34 @@ class GraphList {
 
 
 public class AdjacentListGraph {
+	static Queue<Integer> helperQueue = new LinkedList<>();
+
+	public static void bfsTraversal(GraphList graphList) {
+		int[] visitedVertices = new int[graphList.vertex];
+
+		// if there is no starting vertex then return
+		if (graphList.list[0].size() == 0) return;
+		// mark this vertex visited because it's added in the queue
+		visitedVertices[0] = 1;
+
+		helperQueue.add(0);
+
+		while (!helperQueue.isEmpty()) {
+			int currentVertex = helperQueue.remove();
+
+			System.out.println(currentVertex);
+
+			for(int i = 0; i < graphList.list[currentVertex].size(); i++) {
+				int adjacentVertex = graphList.list[currentVertex].get(i);
+				if (visitedVertices[adjacentVertex] == 0) {
+					// mark the vertex as visited because it's added in the queue
+					visitedVertices[adjacentVertex] = 1;
+					helperQueue.add(adjacentVertex);
+				}
+			}
+		}
+	}
+
 	public static void printGraph(GraphList graphList) {
 		for(int i = 0; i < graphList.vertex; i++) {
 			System.out.print(i + " is connected to: ");
@@ -60,6 +89,7 @@ public class AdjacentListGraph {
         graphList.addEdge(3, 4);
 
         printGraph(graphList);
+        bfsTraversal(graphList);
 	}
 }
 
