@@ -27,14 +27,8 @@ public class MaxHeap {
 		return 2*i + 2;
 	}
 
-	public void insert(int value) {
-		// If heap is already full then return
-		if (size == maxSize) return;
-
-		heapList[size] = value;
-		int iOfNew = size;
-		size = size + 1;
-
+	public void swapUp(int value) {
+		int iOfNew = size-1;
 		while(heapList[parent(iOfNew)] < value && iOfNew != 0) {
 			int parentIndex = parent(iOfNew);
 
@@ -46,12 +40,37 @@ public class MaxHeap {
 		}
 	}
 
+	public void insert(int value) {
+		// If heap is already full then return
+		if (size == maxSize) return;
+
+		heapList[size] = value;
+		size = size + 1;
+
+		swapUp(value);
+	}
+
 	public int maxChild(int i) {
 		// left child may exist without right child beacuse tree
 		// is completed, in that case return left child index
 		if (rightChild(i) >= size) return leftChild(i);
 		else if (heapList[leftChild(i)] > heapList[rightChild(i)]) return leftChild(i);
 		return rightChild(i);
+	}
+
+	public void swapDown(int i) {
+		// restore heap structure
+		int toBeSwappedIndex = i;
+		int maxChildIndex = maxChild(toBeSwappedIndex);
+
+		while(maxChildIndex < size && heapList[maxChildIndex] > heapList[toBeSwappedIndex]) {
+			int temp = heapList[maxChildIndex];
+			heapList[maxChildIndex] = heapList[toBeSwappedIndex];
+			heapList[toBeSwappedIndex] = temp;
+
+			toBeSwappedIndex = maxChildIndex;
+			maxChildIndex = maxChild(toBeSwappedIndex);
+		}
 	}
 
 	// for max heap delete operation deletes element with
@@ -63,20 +82,33 @@ public class MaxHeap {
 		heapList[size-1] = 0;
 		size = size - 1;
 
-		// restore heap structure
-		int toBeSwappedIndex = 0;
-		int maxChildIndex = maxChild(toBeSwappedIndex);
-
-		while(heapList[maxChildIndex] > heapList[toBeSwappedIndex] && maxChildIndex < size) {
-			int temp = heapList[maxChildIndex];
-			heapList[maxChildIndex] = heapList[toBeSwappedIndex];
-			heapList[toBeSwappedIndex] = temp;
-
-			toBeSwappedIndex = maxChildIndex;
-			maxChildIndex = maxChild(toBeSwappedIndex);
-		}
+		swapDown(0);
 
 		return deletedVal;
+	}
+
+	public static MaxHeap heapify(int[] items) {
+		MaxHeap maxHeap = new MaxHeap(0, items.length);
+		maxHeap.heapList = items;
+		int itemsCount = items.length;
+		maxHeap.size = itemsCount;
+
+		for(int i = itemsCount-1; i >= 0; i--) {
+			// int toBeSwappedIndex = i;
+			// int maxChildIndex = maxHeap.maxChild(toBeSwappedIndex);
+
+			// while(maxChildIndex < maxHeap.size && maxHeap.heapList[maxChildIndex] > maxHeap.heapList[toBeSwappedIndex]) {
+			// 	int temp = maxHeap.heapList[maxChildIndex];
+			// 	maxHeap.heapList[maxChildIndex] = maxHeap.heapList[toBeSwappedIndex];
+			// 	maxHeap.heapList[toBeSwappedIndex] = temp;
+
+			// 	toBeSwappedIndex = maxChildIndex;
+			// 	maxChildIndex = maxHeap.maxChild(toBeSwappedIndex);
+			// }
+			maxHeap.swapDown(i);
+		}
+
+		return maxHeap;
 	}
 
 	public void printHeap() {
@@ -86,35 +118,39 @@ public class MaxHeap {
 	}
 
 	public static void main(String[] args) {
-		MaxHeap maxHeap = new MaxHeap(-56, 6);
-		maxHeap.insert(10);
-		maxHeap.insert(60);
-		maxHeap.insert(70);
-		maxHeap.insert(-40);
-		maxHeap.insert(65);
+		// MaxHeap maxHeap = new MaxHeap(-56, 6);
+		// maxHeap.insert(10);
+		// maxHeap.insert(60);
+		// maxHeap.insert(70);
+		// maxHeap.insert(-40);
+		// maxHeap.insert(65);
 
-		maxHeap.printHeap();
+		// maxHeap.printHeap();
 
-		System.out.println("After deleting: " + maxHeap.delete());
-		maxHeap.printHeap();
-		System.out.println("After deleting: " + maxHeap.delete());
-		maxHeap.printHeap();
-		System.out.println("After deleting: " + maxHeap.delete());
-		maxHeap.printHeap();
-		System.out.println("After deleting: " + maxHeap.delete());
-		maxHeap.printHeap();
-		System.out.println("After deleting: " + maxHeap.delete());
-		maxHeap.printHeap();
-		System.out.println("After deleting: " + maxHeap.delete());
-		maxHeap.printHeap();
+		// System.out.println("After deleting: " + maxHeap.delete());
+		// maxHeap.printHeap();
+		// System.out.println("After deleting: " + maxHeap.delete());
+		// maxHeap.printHeap();
+		// System.out.println("After deleting: " + maxHeap.delete());
+		// maxHeap.printHeap();
+		// System.out.println("After deleting: " + maxHeap.delete());
+		// maxHeap.printHeap();
+		// System.out.println("After deleting: " + maxHeap.delete());
+		// maxHeap.printHeap();
+		// System.out.println("After deleting: " + maxHeap.delete());
+		// maxHeap.printHeap();
 
-		maxHeap.insert(-56);
-		maxHeap.insert(10);
-		maxHeap.insert(60);
-		maxHeap.insert(70);
-		maxHeap.insert(-40);
-		maxHeap.insert(65);
-		System.out.println("After inserting again:");
-		maxHeap.printHeap();
+		// maxHeap.insert(-56);
+		// maxHeap.insert(10);
+		// maxHeap.insert(60);
+		// maxHeap.insert(70);
+		// maxHeap.insert(-40);
+		// maxHeap.insert(65);
+		// System.out.println("After inserting again:");
+		// maxHeap.printHeap();
+
+		int[] items = new int[]{-56, 10, 60, 70, -40, 65};
+		MaxHeap maxHeap2 = heapify(items);
+		maxHeap2.printHeap();
 	}
 }
