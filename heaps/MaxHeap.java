@@ -106,6 +106,22 @@ public class MaxHeap {
 		}
 	}
 
+	// function to find minimum element in max heap
+	public int findMin() {
+		// startIndex is the index where leaf nodes start in heap list
+		int startIndex = parent(size-1) + 1;
+		int endIndex = size-1;
+		int min = heapList[startIndex];
+		startIndex++;
+
+		while (startIndex <= endIndex) {
+			if (heapList[startIndex] < min) min = heapList[startIndex];
+			startIndex++;
+		}
+
+		return min;
+	}
+
 	public static void main(String[] args) {
 		// MaxHeap maxHeap = new MaxHeap(-56, 6);
 		// maxHeap.insert(10);
@@ -141,5 +157,7 @@ public class MaxHeap {
 		int[] items = new int[]{-56, 10, 60, 70, -40, 65};
 		MaxHeap maxHeap2 = heapify(items);
 		maxHeap2.printHeap();
+
+		System.out.println("Minimum element: " + maxHeap2.findMin());
 	}
 }
