@@ -94,17 +94,6 @@ public class MaxHeap {
 		maxHeap.size = itemsCount;
 
 		for(int i = itemsCount-1; i >= 0; i--) {
-			// int toBeSwappedIndex = i;
-			// int maxChildIndex = maxHeap.maxChild(toBeSwappedIndex);
-
-			// while(maxChildIndex < maxHeap.size && maxHeap.heapList[maxChildIndex] > maxHeap.heapList[toBeSwappedIndex]) {
-			// 	int temp = maxHeap.heapList[maxChildIndex];
-			// 	maxHeap.heapList[maxChildIndex] = maxHeap.heapList[toBeSwappedIndex];
-			// 	maxHeap.heapList[toBeSwappedIndex] = temp;
-
-			// 	toBeSwappedIndex = maxChildIndex;
-			// 	maxChildIndex = maxHeap.maxChild(toBeSwappedIndex);
-			// }
 			maxHeap.swapDown(i);
 		}
 
