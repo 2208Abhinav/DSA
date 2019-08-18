@@ -46,6 +46,39 @@ public class MaxHeap {
 		}
 	}
 
+	public int maxChild(int i) {
+		// left child may exist without right child beacuse tree
+		// is completed, in that case return left child index
+		if (rightChild(i) >= size) return leftChild(i);
+		else if (heapList[leftChild(i)] > heapList[rightChild(i)]) return leftChild(i);
+		return rightChild(i);
+	}
+
+	// for max heap delete operation deletes element with
+	// max value
+	public int delete() {
+		// swap root with last element
+		int deletedVal = heapList[0];
+		heapList[0] = heapList[size-1];
+		heapList[size-1] = 0;
+		size = size - 1;
+
+		// restore heap structure
+		int toBeSwappedIndex = 0;
+		int maxChildIndex = maxChild(toBeSwappedIndex);
+
+		while(heapList[maxChildIndex] > heapList[toBeSwappedIndex] && maxChildIndex < size) {
+			int temp = heapList[maxChildIndex];
+			heapList[maxChildIndex] = heapList[toBeSwappedIndex];
+			heapList[toBeSwappedIndex] = temp;
+
+			toBeSwappedIndex = maxChildIndex;
+			maxChildIndex = maxChild(toBeSwappedIndex);
+		}
+
+		return deletedVal;
+	}
+
 	public void printHeap() {
 		for(int i = 0; i < size; i++) {
 			System.out.println(heapList[i]);
@@ -60,6 +93,28 @@ public class MaxHeap {
 		maxHeap.insert(-40);
 		maxHeap.insert(65);
 
+		maxHeap.printHeap();
+
+		System.out.println("After deleting: " + maxHeap.delete());
+		maxHeap.printHeap();
+		System.out.println("After deleting: " + maxHeap.delete());
+		maxHeap.printHeap();
+		System.out.println("After deleting: " + maxHeap.delete());
+		maxHeap.printHeap();
+		System.out.println("After deleting: " + maxHeap.delete());
+		maxHeap.printHeap();
+		System.out.println("After deleting: " + maxHeap.delete());
+		maxHeap.printHeap();
+		System.out.println("After deleting: " + maxHeap.delete());
+		maxHeap.printHeap();
+
+		maxHeap.insert(-56);
+		maxHeap.insert(10);
+		maxHeap.insert(60);
+		maxHeap.insert(70);
+		maxHeap.insert(-40);
+		maxHeap.insert(65);
+		System.out.println("After inserting again:");
 		maxHeap.printHeap();
 	}
 }
