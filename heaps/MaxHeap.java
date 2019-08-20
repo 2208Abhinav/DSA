@@ -100,6 +100,22 @@ public class MaxHeap {
 		return maxHeap;
 	}
 
+	public static MaxHeap merge2Heaps(MaxHeap heap1, MaxHeap heap2) {
+		int[] mergedArr = new int[heap1.size + heap2.size];
+
+		for(int i = 0; i < heap1.size; i++) {
+			mergedArr[i] = heap1.heapList[i];
+		}
+
+		for(int i = 0; i < heap2.size; i++) {
+			mergedArr[heap1.size + i] = heap2.heapList[i];
+		}
+
+		MaxHeap mergedHeap = heapify(mergedArr);
+
+		return mergedHeap;
+	}
+
 	public void printHeap() {
 		for(int i = 0; i < size; i++) {
 			System.out.println(heapList[i]);
@@ -154,10 +170,31 @@ public class MaxHeap {
 		// System.out.println("After inserting again:");
 		// maxHeap.printHeap();
 
-		int[] items = new int[]{-56, 10, 60, 70, -40, 65};
-		MaxHeap maxHeap2 = heapify(items);
-		maxHeap2.printHeap();
+		// int[] items = new int[]{-56, 10, 60, 70, -40, 65};
+		// MaxHeap maxHeap2 = heapify(items);
+		// maxHeap2.printHeap();
 
-		System.out.println("Minimum element: " + maxHeap2.findMin());
+		// System.out.println("Minimum element: " + maxHeap2.findMin());
+
+		MaxHeap heap1 = new MaxHeap(100, 5);
+		heap1.insert(110);
+		heap1.insert(56);
+		heap1.insert(10);
+		heap1.insert(15);
+
+		System.out.println("Heap 1");
+		heap1.printHeap();
+
+		MaxHeap heap2 = new MaxHeap(50, 4);
+		heap2.insert(90);
+		heap2.insert(38);
+		heap2.insert(140);
+
+		System.out.println("Heap 2");
+		heap2.printHeap();
+
+		MaxHeap mergedHeap = merge2Heaps(heap1, heap2);
+		System.out.println("Merged heap:");
+		mergedHeap.printHeap();
 	}
 }
