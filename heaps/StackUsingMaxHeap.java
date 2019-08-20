@@ -9,7 +9,7 @@ class HeapNode {
 
 public class StackUsingMaxHeap {
 	HeapNode[] heapList;
-	int size, maxSize, priority = 1;
+	int size = 0, maxSize, priority = 1;
 
 	void push(int value) {
 		if (size == maxSize) {
@@ -95,17 +95,15 @@ public class StackUsingMaxHeap {
 		return rightChildIndex;
 	}
 
-	StackUsingMaxHeap(int root, int maxSize) {
+	StackUsingMaxHeap(int maxSize) {
 		this.heapList = new HeapNode[maxSize];
-		heapList[0] = new HeapNode(priority, root);
-		this.priority += 1;
 		this.maxSize = maxSize;
-		this.size = 1;
 	}
 
 	public static void main(String[] args) {
-		StackUsingMaxHeap stack = new StackUsingMaxHeap(56, 5);
+		StackUsingMaxHeap stack = new StackUsingMaxHeap(5);
 
+		stack.push(56);
 		stack.push(38);
 		stack.push(15);
 		stack.push(10);
