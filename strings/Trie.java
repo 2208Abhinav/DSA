@@ -17,6 +17,7 @@ public class Trie {
 		int length = key.length();
 
 		for(int i = 0; i < length; i++) {
+			// character directly maps to index number
 			int index = key.charAt(i) - 'a';
 
 			if (nextNode.children[index] == null) {
@@ -35,6 +36,7 @@ public class Trie {
 		int length = key.length();
 
 		for(int i = 0; i < length; i++) {
+			// character directly maps to index number
 			int index = key.charAt(i) - 'a';
 
 			if (nextNode.children[index] == null) return false;
