@@ -51,6 +51,17 @@ public class TernarySearchTree {
 		return search(root, word, 0);
 	}
 
+	static void traverse(TSTNode node, String prefix) {
+		if(node != null) {
+			traverse(node.left, prefix);
+			if(node.isEnd) {
+				System.out.println(prefix + node.data);
+			}
+			traverse(node.eq, prefix + node.data);
+			traverse(node.right, prefix);
+		}
+	}
+
 	public static void main(String[] args) {
 		insert("abc");
 		insert("bat");
@@ -61,5 +72,7 @@ public class TernarySearchTree {
 		System.out.println("'cats' exists: " + search("cats"));
 		System.out.println("'boats' exists: " + search("boats"));
 		System.out.println("'boat' exists: " + search("boat"));
+
+		traverse(root, "");
 	}
 }
