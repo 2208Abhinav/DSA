@@ -62,6 +62,10 @@ public class TernarySearchTree {
 		}
 	}
 
+	static void traverse(TSTNode node) {
+		traverse(node, "");
+	}
+
 	public static void main(String[] args) {
 		insert("abc");
 		insert("bat");
@@ -73,6 +77,6 @@ public class TernarySearchTree {
 		System.out.println("'boats' exists: " + search("boats"));
 		System.out.println("'boat' exists: " + search("boat"));
 
-		traverse(root, "");
+		traverse(root);
 	}
 }
